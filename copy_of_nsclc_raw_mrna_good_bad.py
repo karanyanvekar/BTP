@@ -32,7 +32,7 @@ else:
 data_file = '../NSCLC_raw_mRNA_op_complete.csv'
 
 data = pd.read_csv(data_file, index_col=0)
-
+print("Data Read")
 data = data.transpose()
 
 Label_File = '../NSCLC_TCGA_clinical_op_complete_good_bad.csv'
@@ -42,7 +42,7 @@ Labels = pd.read_csv(Label_File, index_col=0)
 Labels.drop(Labels[Labels['Group'] == 'Intermediate'].index, inplace=True)
 
 data = pd.merge(data, Labels['Group'], how = 'inner', left_index=True, right_index=True)
-
+print("Data Merged")
 data = data.fillna(0)
 
 X = data.iloc[:, 0:-1]
@@ -101,7 +101,7 @@ X_test_Z = X_test_Z.fillna(0)
 # print("Recall:",metrics.recall_score(Y_test, Y_predict))
 # from sklearn.metrics import classification_report, confusion_matrix
 # print(confusion_matrix(Y_test, Y_predict))
-
+print("Running Tasks...")
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
 
