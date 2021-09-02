@@ -21,7 +21,7 @@ from sklearn.mixture import GaussianMixture
 from sklearn.ensemble import RandomForestClassifier
 from sklearn import metrics
 from sklearn.metrics import classification_report, confusion_matrix
-gpu_id=1
+gpu_id=0
 if len(tf.config.list_physical_devices('GPU'))!=0: # If GPU is available
     gpus = tf.config.experimental.list_physical_devices('GPU')# Lists all available GPUs
     tf.config.experimental.set_visible_devices(gpus[gpu_id], 'GPU')# Forces it to use only gpu gpu_id
