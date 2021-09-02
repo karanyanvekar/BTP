@@ -75,32 +75,32 @@ X_test_Z = scaled
 X_train_Z = X_train_Z.fillna(0)
 X_test_Z = X_test_Z.fillna(0)
 
-from pandas import read_csv
-from sklearn.model_selection import cross_val_score
-from sklearn.svm import SVC
-from sklearn.model_selection import RepeatedStratifiedKFold
-from skopt import BayesSearchCV
-params = dict()
-params['C'] = (1e-6, 100.0, 'log-uniform')
-params['gamma'] = (1e-6, 100.0, 'log-uniform')
-params['degree'] = (1,5)
-params['kernel'] = ['linear', 'poly', 'rbf', 'sigmoid']
-# define evaluation
-cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=3, random_state=1)
-# define the search
-search = BayesSearchCV(estimator=SVC(), search_spaces=params, n_jobs=-1, cv=cv)
-# perform the search
-search.fit(X_train_Z, Y_train)
-# report the best result
-print(search.best_score_)
-print(search.best_params_)
+# from pandas import read_csv
+# from sklearn.model_selection import cross_val_score
+# from sklearn.svm import SVC
+# from sklearn.model_selection import RepeatedStratifiedKFold
+# from skopt import BayesSearchCV
+# params = dict()
+# params['C'] = (1e-6, 100.0, 'log-uniform')
+# params['gamma'] = (1e-6, 100.0, 'log-uniform')
+# params['degree'] = (1,5)
+# params['kernel'] = ['linear', 'poly', 'rbf', 'sigmoid']
+# # define evaluation
+# cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=3, random_state=1)
+# # define the search
+# search = BayesSearchCV(estimator=SVC(), search_spaces=params, n_jobs=-1, cv=cv)
+# # perform the search
+# search.fit(X_train_Z, Y_train)
+# # report the best result
+# print(search.best_score_)
+# print(search.best_params_)
 
-Y_predict = search.predict(X_test_Z)
-print("Accuracy:",metrics.accuracy_score(Y_test, Y_predict))
-print("Precision:",metrics.precision_score(Y_test, Y_predict))
-print("Recall:",metrics.recall_score(Y_test, Y_predict))
-from sklearn.metrics import classification_report, confusion_matrix
-print(confusion_matrix(Y_test, Y_predict))
+# Y_predict = search.predict(X_test_Z)
+# print("Accuracy:",metrics.accuracy_score(Y_test, Y_predict))
+# print("Precision:",metrics.precision_score(Y_test, Y_predict))
+# print("Recall:",metrics.recall_score(Y_test, Y_predict))
+# from sklearn.metrics import classification_report, confusion_matrix
+# print(confusion_matrix(Y_test, Y_predict))
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
