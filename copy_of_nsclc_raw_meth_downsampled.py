@@ -21,7 +21,14 @@ from sklearn.mixture import GaussianMixture
 from sklearn.ensemble import RandomForestClassifier
 from sklearn import metrics
 from sklearn.metrics import classification_report, confusion_matrix
-
+gpu_id=1
+if len(tf.config.list_physical_devices('GPU'))!=0: # If GPU is available
+    gpus = tf.config.experimental.list_physical_devices('GPU')# Lists all available GPUs
+    tf.config.experimental.set_visible_devices(gpus[gpu_id], 'GPU')# Forces it to use only gpu gpu_id
+    tf.config.experimental.set_memory_growth(gpus[gpu_id], True)# Forces Tensorflow to use as much memory as needed
+else:
+    print("No GPUs found. Running on CPU")
+print("Checkpoint 1")
 data_file = '../NSCLC_raw_meth_op_complete.csv'
 
 data = pd.read_csv(data_file, index_col=0)
@@ -38,7 +45,7 @@ data = pd.merge(data, Labels['Group'], how = 'inner', left_index=True, right_ind
 
 X = data.iloc[:, 0:-1]
 Y = data.iloc[:, -1]
-
+print("Checkpoint 2")
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = 0.2, random_state = 69)
 
 Y_train = (Y_train == 'Good')
@@ -68,7 +75,7 @@ data_new = data_new.sample(frac = 1)
 
 X_train = data_new.iloc[:, 0:-1]
 Y_train = data_new.iloc[:, -1]
-
+print("Checkpoint 3")
 from sklearn.preprocessing import StandardScaler
 scaler = StandardScaler()
 scaled = scaler.fit_transform(X_train)
@@ -85,7 +92,7 @@ X_test_Z = scaled
 
 X_train_Z = X_train_Z.fillna(0)
 X_test_Z = X_test_Z.fillna(0)
-
+print("Checkpoint 4")
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
 
@@ -137,3 +144,4 @@ print("Recall:",metrics.recall_score(Y_test, Y_predict))
 from sklearn.metrics import classification_report, confusion_matrix
 print(confusion_matrix(Y_test, Y_predict))
 
+print("Checkpoint 5")
