@@ -21,7 +21,13 @@ from sklearn.mixture import GaussianMixture
 from sklearn.ensemble import RandomForestClassifier
 from sklearn import metrics
 from sklearn.metrics import classification_report, confusion_matrix
-
+gpu_id=1
+if len(tf.config.list_physical_devices('GPU'))!=0: # If GPU is available
+    gpus = tf.config.experimental.list_physical_devices('GPU')# Lists all available GPUs
+    tf.config.experimental.set_visible_devices(gpus[gpu_id], 'GPU')# Forces it to use only gpu gpu_id
+    tf.config.experimental.set_memory_growth(gpus[gpu_id], True)# Forces Tensorflow to use as much memory as needed
+else:
+    print("No GPUs found. Running on CPU")
 data_file = '../NSCLC_raw_mRNA_op_complete.csv'
 print("Reading Data...")
 data = pd.read_csv(data_file, index_col=0)
