@@ -23,9 +23,9 @@ from sklearn import metrics
 from sklearn.metrics import classification_report, confusion_matrix
 
 data_file = '../NSCLC_raw_mRNA_op_complete.csv'
-
+print("Reading Data...")
 data = pd.read_csv(data_file, index_col=0)
-
+print("Data Read")
 data = data.transpose()
 
 Label_File = '../NSCLC_TCGA_clinical_op_complete_good_bad.csv'
@@ -33,9 +33,9 @@ Label_File = '../NSCLC_TCGA_clinical_op_complete_good_bad.csv'
 Labels = pd.read_csv(Label_File, index_col=0)
 
 Labels.drop(Labels[Labels['Group'] == 'Intermediate'].index, inplace=True)
-
+print("Merging Data...")
 data = pd.merge(data, Labels['Group'], how = 'inner', left_index=True, right_index=True)
-
+print("Data Merged")
 X = data.iloc[:, 0:-1]
 Y = data.iloc[:, -1]
 
@@ -48,7 +48,7 @@ Y_test = (Y_test == 'Good')
 Y_train = np.multiply(Y_train, 1)
 
 Y_test = np.multiply(Y_test, 1)
-
+print("Balancing Data...")
 data_train = pd.merge(X_train, Y_train, how = 'inner', left_index=True, right_index=True)
 
 nGood = sum(data_train['Group'] == 1)
@@ -68,7 +68,8 @@ data_new = data_new.sample(frac = 1)
 
 X_train = data_new.iloc[:, 0:-1]
 Y_train = data_new.iloc[:, -1]
-
+print("Data Balanced")
+print("Scaling Data...")
 from sklearn.preprocessing import StandardScaler
 scaler = StandardScaler()
 scaled = scaler.fit_transform(X_train)
@@ -85,7 +86,8 @@ X_test_Z = scaled
 
 X_train_Z = X_train_Z.fillna(0)
 X_test_Z = X_test_Z.fillna(0)
-
+print("Data scaled")
+print("Performing the required tasks...")
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
 
@@ -136,4 +138,4 @@ print("Precision:",metrics.precision_score(Y_test, Y_predict))
 print("Recall:",metrics.recall_score(Y_test, Y_predict))
 from sklearn.metrics import classification_report, confusion_matrix
 print(confusion_matrix(Y_test, Y_predict))
-
+print("Done!")
