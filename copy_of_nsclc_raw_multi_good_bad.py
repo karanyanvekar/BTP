@@ -30,7 +30,7 @@ else:
     print("No GPUs found. Running on CPU")
 
 data_file = '../NSCLC_raw_multi_op_complete.csv'
-
+print("Process 1")
 data = pd.read_csv(data_file, index_col=0)
 
 data = data.transpose()
@@ -47,7 +47,7 @@ data = data.fillna(0)
 
 X = data.iloc[:, 0:-1]
 Y = data.iloc[:, -1]
-
+print("Process 2")
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = 0.2, random_state = 69)
 
 Y_train = (Y_train == 'Good')
@@ -57,7 +57,7 @@ Y_test = (Y_test == 'Good')
 Y_train = np.multiply(Y_train, 1)
 
 Y_test = np.multiply(Y_test, 1)
-
+print("Process 3")
 from sklearn.preprocessing import StandardScaler
 scaler = StandardScaler()
 scaled = scaler.fit_transform(X_train)
@@ -101,7 +101,7 @@ X_test_Z = X_test_Z.fillna(0)
 # print("Recall:",metrics.recall_score(Y_test, Y_predict))
 # from sklearn.metrics import classification_report, confusion_matrix
 # print(confusion_matrix(Y_test, Y_predict))
-
+print("Process 4")
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
 
@@ -152,3 +152,4 @@ print("Precision:",metrics.precision_score(Y_test, Y_predict))
 print("Recall:",metrics.recall_score(Y_test, Y_predict))
 from sklearn.metrics import classification_report, confusion_matrix
 print(confusion_matrix(Y_test, Y_predict))
+print("Done")
