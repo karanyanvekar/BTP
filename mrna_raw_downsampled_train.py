@@ -124,7 +124,7 @@ print("Accuracy:",metrics.accuracy_score(Y_train, Y_predict))
 print("Precision:",metrics.precision_score(Y_train, Y_predict))
 print("Recall:",metrics.recall_score(Y_train, Y_predict))
 from sklearn.metrics import classification_report, confusion_matrix
-print(confusion_matrix(Y_test, Y_predict))
+print(confusion_matrix(Y_train, Y_predict))
 from sklearn.model_selection import GridSearchCV
 from sklearn.naive_bayes import GaussianNB
 nb_classifier = GaussianNB()
